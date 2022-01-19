@@ -1,0 +1,20 @@
+#!/bin/bash
+#PBS -q normal 
+#PBS -l select=1:ncpus=20 
+#PBS -P 11001811 
+#PBS -l walltime=23:05:00
+
+cd $PBS_O_WORKDIR 
+
+module purge; module add  singularity intel/19.0.0.117
+IMG=/home/users/nus/e0546056/singularity_container/ubuntu_16_04.sig
+
+#VERY IMPORTANT: tune this path at runtime.
+export SINGULARITYENV_LD_LIBRARY_PATH=/opt/intel/lib/intel64 
+#ERROR WILL OCCUR BY adding the lib path of impi in container.
+
+export SINGULARITYENV_APPEND_PATH=/opt/intel/bin:/opt/intel/impi/2019.3.199/intel64/bin #IMPORTANT, NEEDED, the paths inside the container
+
+
+
+mpiexec -n 20 singularity exec $IMG python py_driver_mpi.py > Result.txt # the .py file is in the host system.
