@@ -1,0 +1,8 @@
+import main as mf
+import numpy as np
+
+def step_mpi(action, rank):
+    crd = mf.step_lbm()
+    print(crd)
+    return crd[0], crd[1]
+
